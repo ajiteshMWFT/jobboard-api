@@ -20,6 +20,7 @@ const applicantSchema = new mongoose.Schema({
         state: String,
         country: String
     },
+
     education: [{
         degree: {
             type: String,
@@ -66,6 +67,7 @@ const applicantSchema = new mongoose.Schema({
             type: String
         }
     }],
+    
     description: {
         type: String,
     },

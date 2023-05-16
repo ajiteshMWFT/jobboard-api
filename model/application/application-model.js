@@ -19,6 +19,11 @@ const applicationSchema = new mongoose.Schema({
   coverLetter: {
     type: String,
   },
+  resume:{
+    type: String,
+  },
+  applicantName:String,
+
   date: {
     type: Date,
     default: Date.now,

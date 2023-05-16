@@ -30,6 +30,7 @@ const applicantAuth = async (req, res) => {
     Date.now() + 15 * 60 * 1000
   );
   await applicantUser.save();
+  
   const transporter = await nodemailer.createTransport({
     service: "Mailcoat",
     host: "smtp.mailcoat.com",

@@ -7,6 +7,7 @@ const router = express.Router();
 
 
 router.post("/applicant-auth", applicantAuth)
+
 router.get('/confirm-applicant', confirmApplicant)
 router.post('/add-details/applicant', applicantAuthMiddleware, applicantDetails)
 

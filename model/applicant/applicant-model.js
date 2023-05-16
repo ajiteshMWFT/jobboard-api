@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Education = require("./applicant-edu-model");
+
 
 const applicantSchema = new mongoose.Schema({
     email: {

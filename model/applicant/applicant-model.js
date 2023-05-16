@@ -23,28 +23,48 @@ const applicantSchema = new mongoose.Schema({
     education: [{
         degree: {
             type: String,
-            
+
         },
         fieldOfStudy: {
             type: String,
-           
+
         },
         school: {
             type: String,
-            
+
         },
         startDate: {
             type: Date,
-        
+
         },
         endDate: {
             type: Date,
-            
+
         },
         description: {
             type: String,
-            
+
         },
+    }],
+    experience: [{
+        company: {
+            type: String,
+            required: true
+        },
+        position: {
+            type: String,
+            required: true
+        },
+        startDate: {
+            type: Date,
+            required: true
+        },
+        endDate: {
+            type: Date
+        },
+        description: {
+            type: String
+        }
     }],
     description: {
         type: String,

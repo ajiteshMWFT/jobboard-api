@@ -40,4 +40,7 @@ const applyJob = async (req, res) => {
         res.status(400).json(error)
     }
 }
-module.exports = { applyJob }
+const getApplication = async(req, res) =>{
+
+}
+module.exports = { applyJob, getApplication }

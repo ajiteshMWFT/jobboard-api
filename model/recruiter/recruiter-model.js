@@ -17,6 +17,9 @@ const recruiterSchema = new mongoose.Schema({
     companyImages: [{
         type: String
     }],
+    companyLogo: {
+        type: String
+    },
     companyLocation: {
         type: String
     },

@@ -2,6 +2,7 @@ const uuid = require("uuid");
 const jwt = require("jsonwebtoken");
 const Applicant = require("../model/applicant/applicant-model");
 const nodemailer = require("nodemailer");
+const multer = require('multer');
 const {
   nodeMailerEmail,
   nodeMailerPass,
@@ -11,62 +12,66 @@ const {
 const Recruiter = require("../model/recruiter/recruiter-model");
 const Application = require("../model/application/application-model");
 
-
 const applicantAuth = async (req, res) => {
-  const { email } = req.body;
-  const token = `${uuid.v4()}`;
-  const applicantUser = await Applicant.findOne({ email });
-  if (!applicantUser) {
-    const newApplicant = new Applicant({
-      email,
-      confirmationToken: token,
-      ConfirmationTokenExpiration: new Date(Date.now() + 15 * 60 * 1000),
-    });
-    await newApplicant.save();
-  }
-
-  applicantUser.confirmationToken = `${token}`;
-  applicantUser.ConfirmationTokenExpiration = new Date(
-    Date.now() + 15 * 60 * 1000
-  );
-  await applicantUser.save();
-  
-  const transporter = await nodemailer.createTransport({
-    service: "Mailcoat",
-    host: "smtp.mailcoat.com",
-    port: 587,
-    secure: false,
-
-    logger: true,
-    debug: true,
-    ignoreTLS: true,
-    tls: {
-      rejectUnAuthorized: true,
-    },
-    auth: {
-      user: "rofajazu@mailgolem.com",
-      pass: "ff6633753e23a6e22b86",
-    },
-  });
-
-  const mailOptions = {
-    from: "rofajazu@mailgolem.com",
-    to: req.body.email,
-    subject: "Login in to your mwu jobs account",
-    html: `<p>Click on the following link to login: <a href="${
-      clientUrl + "/prefrence?token=" + token
-    }">CLick Here</a></p>`,
-  };
-
-  await transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      res.status(500).send("An error occurred while sending the email");
-    } else {
-      console.log("Email sent: " + info.response);
-      res.status(200).send("An email has been sent with the login link");
+  try {
+    const { email } = req.body;
+    const token = `${uuid.v4()}`;
+    const applicantUser = await Applicant.findOne({ email });
+    if (!applicantUser) {
+      const newApplicant = new Applicant({
+        email,
+        confirmationToken: token,
+        ConfirmationTokenExpiration: new Date(Date.now() + 15 * 60 * 1000),
+      });
+      await newApplicant.save();
     }
-  });
+
+    applicantUser.confirmationToken = `${token}`;
+    applicantUser.ConfirmationTokenExpiration = new Date(
+      Date.now() + 15 * 60 * 1000
+    );
+    await applicantUser.save();
+
+    const transporter = await nodemailer.createTransport({
+      service: "Mailcoat",
+      host: "smtp.mailcoat.com",
+      port: 587,
+      secure: false,
+
+      logger: true,
+      debug: true,
+      ignoreTLS: true,
+      tls: {
+        rejectUnAuthorized: true,
+      },
+      auth: {
+        user: "rofajazu@mailgolem.com",
+        pass: "ff6633753e23a6e22b86",
+      },
+    });
+
+    const mailOptions = {
+      from: "rofajazu@mailgolem.com",
+      to: req.body.email,
+      subject: "Login in to your mwu jobs account",
+      html: `<p>Click on the following link to login: <a href="${
+        clientUrl + "/auth/confirmation?token=" + token
+      }">CLick Here</a></p>`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("An error occurred while sending the email");
+      } else {
+        console.log("Email sent: " + info.response);
+        res.status(200).json({ message: "An email has been sent with the login link" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("something went wrong");
+  }
 };
 
 const confirmApplicant = async (req, res) => {

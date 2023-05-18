@@ -47,5 +47,6 @@ const getAllApplications = async (req, res) => {
     res.status(500).json("semthing went wrong");
   }
 };
+
 const getApplication = async (req, res) => {};
 module.exports = { applyJob, getApplication, getAllApplications };

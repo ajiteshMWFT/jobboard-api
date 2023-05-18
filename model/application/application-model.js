@@ -19,10 +19,10 @@ const applicationSchema = new mongoose.Schema({
   coverLetter: {
     type: String,
   },
-  resume:{
+  resume: {
     type: String,
   },
-  applicantName:String,
+  applicantName: String,
 
   date: {
     type: Date,

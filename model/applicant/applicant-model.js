@@ -20,7 +20,7 @@ const applicantSchema = new mongoose.Schema({
     state: String,
     country: String,
   },
-
+  
   education: [
     {
       degree: {
